@@ -2,8 +2,10 @@
 
 namespace Git\Controller;
 
+use Git\Model\CommitInfo;
 use Git\Service\Git2Service;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -108,6 +110,38 @@ class RepositoryController extends AbstractController
             'commits' => $commits,
             'page'    => $page,
             'has_more'=> count($commits) === $limit,
+        ]);
+    }
+
+    /**
+     * The commit graph as data: every branch's history, children before their
+     * parents, each commit with its parents and the references pointing at it
+     * (Git2Service::getCommitGraph()) - what a page draws a graph from.
+     * ?limit= (200, at most 500) and ?offset= page through it; `next` is the
+     * offset of the following page, null on the last.
+     */
+    #[Route('/{repo}/graph.json', name: 'git_graph', requirements: ['repo' => '[^/]+'], methods: ['GET'])]
+    public function graph(Request $request, string $repo): JsonResponse
+    {
+        $this->checkAccess($repo);
+        $limit   = max(1, min(500, (int) $request->query->get('limit', 200)));
+        $offset  = max(0, (int) $request->query->get('offset', 0));
+        $config  = $this->git->getRepositoryConfig($repo);
+        $commits = $this->git->getCommitGraph($repo, $limit, $offset);
+
+        return new JsonResponse([
+            'repository'     => $repo,
+            'default_branch' => $config['default_branch'],
+            'commits'        => array_map(static fn (CommitInfo $commit): array => [
+                'sha'     => $commit->sha,
+                'short'   => $commit->shortSha,
+                'subject' => $commit->subject,
+                'author'  => ['name' => $commit->authorName, 'email' => $commit->authorEmail],
+                'date'    => $commit->authorDate->format(\DATE_ATOM),
+                'parents' => $commit->parentShas,
+                'refs'    => $commit->refs,
+            ], $commits),
+            'next'           => count($commits) === $limit ? $offset + $limit : null,
         ]);
     }
 

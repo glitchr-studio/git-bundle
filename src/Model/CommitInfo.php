@@ -18,5 +18,11 @@ class CommitInfo
         public readonly array $parentShas = [],
         public readonly ?string $diff = null,
         public readonly array $stats = [],
+        /**
+         * The references pointing at this commit, when it was read for a graph (Git2Service::getCommitGraph()).
+         *
+         * @var list<array{type: 'branch'|'tag'|'remote'|'head', name: string, head?: bool}>
+         */
+        public readonly array $refs = [],
     ) {}
 }

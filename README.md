@@ -101,6 +101,39 @@ Do **not** add an import `prefix:` — the routes are already prefixed.
 | `/git/{repo}/log/{ref}` | commit history (paginated) |
 | `/git/{repo}/commit/{sha}` | commit details + diff |
 | `/git/{repo}/branches`, `/git/{repo}/tags` | refs |
+| `/git/{repo}/graph.json` | the commit graph, as JSON (see below) |
+
+### The commit graph
+
+`/git/{repo}/graph.json` (route `git_graph`) answers the history of every
+branch at once, for a page that draws it: the commits reachable from any
+branch, tag or remote branch, children before their parents, each with its
+parents and the references pointing at it.
+
+```json
+{
+    "repository": "app",
+    "default_branch": "main",
+    "commits": [
+        {
+            "sha": "5d3c…", "short": "5d3c1f0a", "subject": "Merge feature",
+            "author": {"name": "Ada", "email": "ada@example.org"}, "date": "2026-10-05T14:02:11+00:00",
+            "parents": ["91ab…", "c07e…"],
+            "refs": [{"type": "branch", "name": "main", "head": true}, {"type": "tag", "name": "v1.2.0"}]
+        }
+    ],
+    "next": null
+}
+```
+
+`?limit=` (200 by default, 500 at most) and `?offset=` page through it; `next`
+is the offset of the following page, `null` on the last. A reference's `type`
+is `branch`, `remote`, `tag` or `head` (a detached HEAD); the checked-out
+branch carries `head: true`. The same access rules apply as to the pages.
+
+In PHP: `Git2Service::getCommitGraph($repo, $limit, $offset)` returns the
+`CommitInfo`s, their `refs` filled; `getReferencesByCommit($repo)` the
+references alone, by commit.
 
 ## Repositories from your application
 

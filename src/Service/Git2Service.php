@@ -113,6 +113,104 @@ class Git2Service
     }
 
     /**
+     * The history of every branch at once, as a commit graph is drawn from it:
+     * the commits reachable from any branch, tag or remote branch, children
+     * before their parents (topological order; by date among the ones no
+     * parentage orders), each with its parents (CommitInfo::$parentShas) and
+     * the references pointing at it (CommitInfo::$refs) - the checked-out
+     * branch marked `head`, a detached HEAD given as a reference of its own.
+     *
+     * @return CommitInfo[]
+     */
+    public function getCommitGraph(string $repoName, int $limit = 200, int $offset = 0): array
+    {
+        $repo = $this->openRepo($repoName);
+        $refs = $this->getReferencesByCommit($repoName);
+        if (!$refs) {
+            return [];
+        }
+
+        $walk = git_revwalk_new($repo);
+        git_revwalk_sorting($walk, GIT_SORT_TOPOLOGICAL | GIT_SORT_TIME);
+        foreach (array_keys($refs) as $sha) {
+            git_revwalk_push($walk, (string) $sha);
+        }
+
+        $commits = [];
+        $skipped = 0;
+        $limit   = max(1, $limit);
+        while (($oid = git_revwalk_next($walk)) !== null && $oid !== false) {
+            if ($skipped < $offset) {
+                $skipped++;
+                continue;
+            }
+            $commits[] = $this->commitInfoFromSha($repo, $oid, $refs[$oid] ?? []);
+            if (count($commits) >= $limit) {
+                break;
+            }
+        }
+
+        git_revwalk_free($walk);
+        return $commits;
+    }
+
+    /**
+     * Every branch, tag and remote branch by the commit it points at
+     * (an annotated tag: the commit it tags). The checked-out branch carries
+     * `head: true`; a detached HEAD is a reference of type `head`.
+     *
+     * @return array<string, list<array{type: 'branch'|'tag'|'remote'|'head', name: string, head?: bool}>>
+     */
+    public function getReferencesByCommit(string $repoName): array
+    {
+        $repo = $this->openRepo($repoName);
+
+        // The checked-out branch by its name: two branches on one commit are not both HEAD.
+        $headName = null;
+        $headSha  = null;
+        $head     = @git_repository_head($repo);
+        if ($head) {
+            $headName = git_reference_name($head);
+            $resolved = @git_reference_resolve($head);
+            $headSha  = $resolved ? git_reference_target($resolved) : null;
+        }
+
+        $refs = [];
+        foreach (git_reference_list($repo) as $refName) {
+            $type = match (true) {
+                str_starts_with($refName, 'refs/heads/')   => 'branch',
+                str_starts_with($refName, 'refs/remotes/') => 'remote',
+                default                                    => null,
+            };
+            // origin/HEAD only says which remote branch is the default one.
+            if ($type === null || str_ends_with($refName, '/HEAD')) {
+                continue;
+            }
+            try {
+                $sha = git_reference_target(git_reference_resolve(git_reference_lookup($repo, $refName)));
+            } catch (\Throwable) {
+                continue;
+            }
+            if (!$sha) {
+                continue;
+            }
+            $ref = ['type' => $type, 'name' => substr($refName, strlen($type === 'branch' ? 'refs/heads/' : 'refs/remotes/'))];
+            if ($type === 'branch') {
+                $ref['head'] = $refName === $headName;
+            }
+            $refs[$sha][] = $ref;
+        }
+        foreach ($this->getTags($repoName) as $tag) {
+            $refs[$tag['sha']][] = ['type' => 'tag', 'name' => $tag['name']];
+        }
+        if ($headSha && !str_starts_with((string) $headName, 'refs/heads/')) {
+            $refs[$headSha][] = ['type' => 'head', 'name' => 'HEAD'];
+        }
+
+        return $refs;
+    }
+
+    /**
      * Return a single CommitInfo including unified diff and stats.
      */
     public function getCommit(string $repoName, string $sha): CommitInfo
@@ -411,7 +509,7 @@ class Git2Service
         return $crumbs;
     }
 
-    private function commitInfoFromSha($repo, string $sha): CommitInfo
+    private function commitInfoFromSha($repo, string $sha, array $refs = []): CommitInfo
     {
         $commit    = git_commit_lookup($repo, $sha);
         $author    = git2_signature_convert(git_commit_author($commit));
@@ -437,6 +535,7 @@ class Git2Service
             committerEmail:$committer['email'],
             committerDate: new \DateTimeImmutable('@' . $committer['when.time']),
             parentShas:    $parents,
+            refs:          $refs,
         );
     }
 }
