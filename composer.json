@@ -3,7 +3,7 @@
     "type": "symfony-bundle",
     "description": "GitHub-like git repository viewer for Symfony, powered by libgit2 via the php-git2 extension",
     "homepage": "https://www.glitchr.io",
-    "license": "LGPL-3.0-or-later",
+    "license": "MIT",
     "authors": [
         {
             "name": "Marco Meyer",

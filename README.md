@@ -197,4 +197,4 @@ vendor/bin/phpunit   # needs php-git2 and the git binary (fixtures are built wit
 - The auto-clone/fetch happens in a **cache warmer** (`RepositoryWarmer`,
   optional): a slow remote can slow down `cache:warmup`, so prefer bare
   mirrors on fast storage for large repositories.
-- Licensed LGPL-3.0-or-later (see `COPYING` / `COPYING.LESSER`).
+- Licensed MIT (`LICENSE`) since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.
