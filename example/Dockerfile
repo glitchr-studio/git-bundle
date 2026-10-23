@@ -71,7 +71,9 @@ EOF
 
 # composer's recipe scripts compiled the container BEFORE the config files
 # above were copied — drop that stale cache so first warmup starts clean.
-RUN rm -rf var/cache
+# Session upload progress off: php.net's mitigation for CVE-2026-109619.
+RUN rm -rf var/cache \
+    && echo 'session.upload_progress.enabled = 0' > /usr/local/etc/php/conf.d/zz-example.ini
 
 EXPOSE 8000
 
