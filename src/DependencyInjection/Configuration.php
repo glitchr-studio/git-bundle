@@ -37,7 +37,7 @@ class Configuration implements ConfigurationInterface
                                 ->isRequired()
                             ->end()
                             ->scalarNode('url')
-                                ->info('Remote URL — if set and path does not exist, the warmer clones it automatically')
+                                ->info('Remote URL: git:sync clones it into path when path does not exist, and fetches it otherwise')
                                 ->defaultNull()
                             ->end()
                             ->scalarNode('label')

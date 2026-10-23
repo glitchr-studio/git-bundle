@@ -57,7 +57,7 @@ git:
             url: 'https://github.com/libgit2/libgit2'
             path: '%kernel.project_dir%/var/repos/libgit2.git'
             label: 'libgit2/libgit2'
-            description: 'The C library powering this very viewer (auto-cloned at startup)'
+            description: 'The C library powering this very viewer (cloned at startup by git:sync)'
             default_branch: main
         git-bundle:
             path: '/srv/git-bundle'
@@ -75,6 +75,6 @@ RUN rm -rf var/cache
 
 EXPOSE 8000
 
-# cache:warmup triggers the RepositoryWarmer (auto-clone of libgit2), then a
+# git:sync clones libgit2 (cache:warmup does not touch the network), then a
 # plain PHP dev server serves the skeleton.
-CMD ["sh", "-c", "php bin/console cache:warmup && php -S 0.0.0.0:8000 -t public"]
+CMD ["sh", "-c", "php bin/console cache:warmup && php bin/console git:sync && php -S 0.0.0.0:8000 -t public"]

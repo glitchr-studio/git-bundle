@@ -3,7 +3,7 @@
 namespace Git\Command;
 
 use Git\Repository\RepositoryRegistry;
-use Git\Warmer\RepositoryWarmer;
+use Git\Repository\RepositorySync;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -12,17 +12,18 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * What the warmer does at cache:warmup, on demand: clone the repositories
- * that have a url but no copy yet, fetch the others - all of them, or those
- * named. Worth a cron line when repositories come from a provider (they are
- * added long after the last deploy's warmup).
+ * Clone the repositories that have a url but no copy yet, fetch the others -
+ * all of them, or those named. The only place the bundle talks to a remote
+ * (cache:warmup does not): run it at a deploy, after the warmup, and from a
+ * cron line to keep the mirrors fresh and to clone the repositories a
+ * provider adds.
  */
 #[AsCommand(name: 'git:sync', description: 'Clone or fetch the repositories that have a remote url')]
 class SyncCommand extends Command
 {
     public function __construct(
         private readonly RepositoryRegistry $registry,
-        private readonly RepositoryWarmer $warmer,
+        private readonly RepositorySync $sync,
     ) {
         parent::__construct();
     }
@@ -56,7 +57,7 @@ class SyncCommand extends Command
                 $io->comment(sprintf('%s: no url, nothing to sync.', $name));
                 continue;
             }
-            $this->warmer->sync($name, $config) ? $synced++ : $failed++;
+            $this->sync->sync($name, $config, $output->writeln(...)) ? $synced++ : $failed++;
         }
 
         $failed ? $io->warning(sprintf('%d synced, %d failed.', $synced, $failed)) : $io->success(sprintf('%d synced.', $synced));

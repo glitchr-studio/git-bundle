@@ -18,9 +18,11 @@ any local repository from your own site, behind your own security layer.
   repository is impossible by design. Every route is additionally gated by a
   configurable role.
 - **Repositories are declarative.** You list repositories in config; anything
-  declared with a `url` whose `path` does not exist yet is **cloned
-  automatically** during `cache:warmup`, and fetched (`--all --prune`) on later
-  warmups. Deploying a new viewer is: add 4 lines of YAML, warm the cache.
+  declared with a `url` is cloned (a bare mirror) when its `path` does not
+  exist yet, and fetched (`--all --prune`) otherwise, by `bin/console git:sync`.
+  `cache:warmup` never talks to a remote: a warmup builds from what is on disk
+  and must not need the network. Deploying a new viewer is: add 4 lines of
+  YAML, run `git:sync`.
 
 ## Try it in one command
 
@@ -30,7 +32,7 @@ libgit2 repository itself) ships in [example/Dockerfile](example/Dockerfile):
 ```bash
 docker build -t git-bundle-demo -f example/Dockerfile .
 docker run --rm -p 8000:8000 git-bundle-demo
-# → http://localhost:8000/git   (libgit2 is auto-cloned at startup by the warmer)
+# → http://localhost:8000/git   (libgit2 is cloned at startup by git:sync)
 ```
 
 ## Requirements
@@ -68,7 +70,7 @@ git:
     access_role: ROLE_ADMIN     # role required to browse (PUBLIC_ACCESS to open up)
     repositories:
         hellogitworld:
-            url:  'https://github.com/githubtraining/hellogitworld'   # auto-cloned at cache:warmup
+            url:  'https://github.com/githubtraining/hellogitworld'   # cloned by git:sync
             path: '%kernel.project_dir%/var/repos/hellogitworld.git'
             label: 'Hello Git World'
             description: 'Demo repository'
@@ -155,12 +157,12 @@ final class ProjectRepositories implements RepositoryProviderInterface
 ```
 
 When a name exists in both, the configured repository wins. Providers are
-queried lazily, once per request. The warmer tolerates a provider that fails
-(no database while an image builds).
+queried lazily, once per request.
 
 `bin/console git:sync [name…]` clones or fetches the repositories that have a
-`url`, which is what the warmer does, but on demand. It is worth a cron line
-when repositories come from a provider.
+`url` - all of them, or those named. It is the only command of the bundle that
+talks to a remote: run it at a deploy, and from a cron line to keep the mirrors
+fresh and to clone the repositories a provider adds.
 
 ## One repository at a time
 
@@ -194,7 +196,9 @@ vendor/bin/phpunit   # needs php-git2 and the git binary (fixtures are built wit
 
 ## Notes
 
-- The auto-clone/fetch happens in a **cache warmer** (`RepositoryWarmer`,
-  optional): a slow remote can slow down `cache:warmup`, so prefer bare
-  mirrors on fast storage for large repositories.
+- Cloning and fetching happen in `git:sync` (`Git\Repository\RepositorySync`),
+  never in `cache:warmup`: until 2026-10 a cache warmer (`RepositoryWarmer`)
+  did it, so every warmup needed the network and fetched every remote. The
+  class remains as a deprecated name of `RepositorySync`, no longer a warmer.
+  A large remote takes a while to mirror: prefer bare mirrors on fast storage.
 - Licensed MIT (`LICENSE`) since 2026-10-09; earlier versions remain published under LGPL-3.0-or-later.

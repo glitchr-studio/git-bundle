@@ -3,6 +3,7 @@
 use Git\Command\SyncCommand;
 use Git\Controller\RepositoryController;
 use Git\Repository\RepositoryRegistry;
+use Git\Repository\RepositorySync;
 use Git\Service\Git2Service;
 use Git\Warmer\RepositoryWarmer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -30,14 +31,21 @@ return static function (ContainerConfigurator $container): void {
 
     $services->alias(Git2Service::class, 'git.service.git2');
 
-    $services->set('git.warmer.repository', RepositoryWarmer::class)
-        ->args([new Reference('git.repository.registry')])
-        ->tag('kernel.cache_warmer');
+    // Clones and fetches the repositories that have a url: git:sync runs it,
+    // never cache:warmup (a warmup must not need the network).
+    $services->set('git.repository.sync', RepositorySync::class);
 
-    $services->alias(RepositoryWarmer::class, 'git.warmer.repository');
+    $services->alias(RepositorySync::class, 'git.repository.sync');
+
+    // The former name, no cache warmer any more.
+    $services->set(RepositoryWarmer::class)
+        ->deprecate('git/git-bundle', '1.x', 'The "%service_id%" service is deprecated, use "Git\\Repository\\RepositorySync" (git:sync): repositories are no longer synced during cache:warmup.');
+
+    $services->alias('git.warmer.repository', RepositoryWarmer::class)
+        ->deprecate('git/git-bundle', '1.x', 'The "%alias_id%" service alias is deprecated, use "git.repository.sync".');
 
     $services->set('git.command.sync', SyncCommand::class)
-        ->args([new Reference('git.repository.registry'), new Reference('git.warmer.repository')])
+        ->args([new Reference('git.repository.registry'), new Reference('git.repository.sync')])
         ->tag('console.command');
 
     // Registered under the FQCN: attribute-imported routes reference the
