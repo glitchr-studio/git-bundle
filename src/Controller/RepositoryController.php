@@ -3,7 +3,7 @@
 namespace Git\Controller;
 
 use Git\Model\CommitInfo;
-use Git\Service\Git2Service;
+use Git\Service\RepositoryViewerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class RepositoryController extends AbstractController
 {
     public function __construct(
-        private readonly Git2Service $git,
+        private readonly RepositoryViewerInterface $git,
         private readonly string $accessRole = 'ROLE_ADMIN',
         private readonly ?string $repositoryAttribute = null,
     ) {}
@@ -116,7 +116,7 @@ class RepositoryController extends AbstractController
     /**
      * The commit graph as data: every branch's history, children before their
      * parents, each commit with its parents and the references pointing at it
-     * (Git2Service::getCommitGraph()) - what a page draws a graph from.
+     * (RepositoryViewerInterface::getCommitGraph()) - what a page draws a graph from.
      * ?limit= (200, at most 500) and ?offset= page through it; `next` is the
      * offset of the following page, null on the last.
      */

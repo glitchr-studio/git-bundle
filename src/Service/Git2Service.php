@@ -7,7 +7,11 @@ use Git\Model\TreeEntry;
 use Git\Repository\RepositoryRegistry;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class Git2Service
+/**
+ * The viewer on libgit2, through the php-git2 extension (git.backend: libgit2).
+ * The default backend is the git binary (CliService), which needs no extension.
+ */
+class Git2Service implements RepositoryViewerInterface
 {
     private RepositoryRegistry $registry;
 

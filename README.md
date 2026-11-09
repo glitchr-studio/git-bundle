@@ -1,33 +1,95 @@
 # Git Bundle
 
-A GitHub-like, **read-only git repository viewer** embedded in your Symfony
-application — browse trees, blobs, commit history, diffs, branches and tags of
-any local repository from your own site, behind your own security layer.
+A **git repository engine and viewer** for PHP. Two parts, one package:
+
+- **The engine** (`Git\Engine\`, framework-free): bare repositories read,
+  written and merged through the `git` binary, git's smart HTTP protocol
+  served through `git http-backend`. It needs symfony/process,
+  symfony/filesystem and symfony/lock, nothing else - no framework, no
+  database, no notion of accounts.
+- **The viewer** (`Git\Service\`, a Symfony bundle on top): browse trees,
+  blobs, history, diffs, branches, tags and the commit graph of named
+  repositories from your own site, behind your own security layer. It reads
+  through one interface, `RepositoryViewerInterface`, with two backends: the
+  git binary (`CliService`, the default) or libgit2 through the php-git2
+  extension (`Git2Service`).
 
 ## Philosophy
 
-- **In-process, powered by libgit2.** All repository reads go through
-  [libgit2](https://libgit2.org) via the [php-git2](https://github.com/RogerGee/php-git2)
-  PHP extension. Requests never shell out to the `git` binary and never talk to
-  an external service (no gitweb/cgit/GitLab needed): a repository is treated
-  as a plain data source, opened and object-read directly by PHP.
-- **Read-only by construction.** The bundle exposes lookups only (trees, blobs,
-  commits, refs). Nothing writes to the repositories.
-- **Safe by object addressing.** Paths in URLs are resolved through git tree
-  *objects*, never through the filesystem — path traversal outside the
-  repository is impossible by design. Every route is additionally gated by a
-  configurable role.
-- **Repositories are declarative.** You list repositories in config; anything
-  declared with a `url` is cloned (a bare mirror) when its `path` does not
-  exist yet, and fetched (`--all --prune`) otherwise, by `bin/console git:sync`.
-  `cache:warmup` never talks to a remote: a warmup builds from what is on disk
-  and must not need the network. Deploying a new viewer is: add 4 lines of
-  YAML, run `git:sync`.
+- **The git binary, held at arm's length.** Every command runs through
+  symfony/process with an argument array - never a shell string - a bounded
+  time and a bounded output, no system or global configuration, no prompt
+  (`Git\Engine\Git`). Every ref, revision and path a caller hands over is
+  checked first (`Git\Engine\Names`: no leading `-`, no `..`, git's own ref
+  rules); paths are only resolved through git's objects (`rev:path`), never
+  through the filesystem.
+- **Access control is yours.** The engine decides nothing about who may read
+  or push: the application puts its firewall and its voters in front of
+  `HttpBackend` and of the writes. The viewer's routes are gated by a role and,
+  optionally, a per-repository attribute.
+- **libgit2 as an alternative.** `git.backend: libgit2` reads through php-git2
+  in-process instead; the answers are the same (the tests run the same
+  contract against both).
+- **Repositories are declarative** for the viewer. You list repositories in
+  config; anything declared with a `url` is cloned (a bare mirror) when its
+  `path` does not exist yet, and fetched (`--all --prune`) otherwise, by
+  `bin/console git:sync`. `cache:warmup` never talks to a remote.
+
+## The engine
+
+```php
+use Git\Engine\Git;
+use Git\Engine\HttpBackend;
+use Git\Engine\Model\Person;
+use Git\Engine\RepositoryLocks;
+use Git\Engine\RepositoryStore;
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\Store\FlockStore;
+
+$git = new Git('/usr/bin/git', timeout: 30.0);
+$store = new RepositoryStore($git, '/srv/repositories');   // <root>/<key>.git, the key an id of yours
+
+$repository = $store->create('42');                        // git init --bare, main
+$repository->commitFiles('main', ['README.md' => "# Hello\n"], 'First', new Person('Ada', 'ada@example.org', new DateTimeImmutable()));
+
+$repository->tree('main', 'src');          // list<TreeEntry>, folders first
+$repository->blob('main', 'README.md');    // Blob: content cut at a limit, binary or not
+$repository->log('main', limit: 30);       // list<Commit>
+$repository->commitDiff($id);              // Diff: files, hunks, numbered lines
+$repository->diff('main', 'topic');        // what topic brings (three dots)
+$repository->blame('main', 'src/a.php');   // list<BlameLine>
+$repository->grep('main', 'needle');       // list<GrepMatch>, fixed string, case-insensitive
+
+// A merge made on the server: merge-tree (git's own "ort" merge), commit-tree,
+// then update-ref with the old value - inside the repository's lock.
+$locks = new RepositoryLocks(new LockFactory(new FlockStore()));
+$result = $locks->merge($repository, '42', 'main', 'refs/heads/topic', "Merge topic\n", $by);
+$result->isMerged() ? $result->commit : $result->conflicts;   // the files in conflict, nothing moved
+```
+
+Smart HTTP (`git clone|fetch|push https://host/<owner>/<name>.git`): your
+controller decides who may read (upload-pack) or write (receive-pack), then
+hands the request to the bridge, which runs `git http-backend` as a CGI
+program and gives the headers first, the body as it comes:
+
+```php
+$answer = (new HttpBackend($git, $store))->serve(
+    key: '42', service: 'git-receive-pack',      // or info/refs, git-upload-pack
+    method: 'POST', query: '', contentType: $type, contentEncoding: $encoding,
+    contentLength: $length, input: fopen('php://input', 'r'),
+    remoteUser: 'ada', gitProtocol: $gitProtocolHeader,
+    maxPushBytes: 50_000_000,                    // git's own receive.maxInputSize
+);
+// $answer->status, $answer->headers, foreach ($answer->body as $chunk) echo $chunk;
+```
+
+Only the smart protocol is served. `tests/Engine/Fixtures/http-router.php` is
+a complete (access-free) example behind PHP's own server.
 
 ## Try it in one command
 
-A self-contained demo (bare Symfony skeleton + this bundle, browsing the
-libgit2 repository itself) ships in [example/Dockerfile](example/Dockerfile):
+A self-contained demo of the viewer (bare Symfony skeleton + this bundle,
+browsing the libgit2 repository itself) ships in [example/Dockerfile](example/Dockerfile):
 
 ```bash
 docker build -t git-bundle-demo -f example/Dockerfile .
@@ -37,9 +99,10 @@ docker run --rm -p 8000:8000 git-bundle-demo
 
 ## Requirements
 
-- PHP ≥ 8.1
-- The **php-git2 extension** (PHP bindings for the libgit2 C library). It is
-  not bundled with PHP; install libgit2 then build the extension:
+- PHP ≥ 8.1 and the `git` binary (2.38 or later: merges use `merge-tree --write-tree`).
+- Optionally, for `git.backend: libgit2`, the **php-git2 extension** (PHP
+  bindings for the libgit2 C library). It is not bundled with PHP; install
+  libgit2 then build the extension:
 
   ```bash
   apt install libgit2-dev            # or brew install libgit2
@@ -66,6 +129,10 @@ Git\GitBundle::class => ['all' => true],
 
 ```yaml
 git:
+    backend: cli                # the viewer reads with the git binary (cli) or libgit2 (php-git2)
+    engine:
+        binary: git             # the git binary of the engine and of the cli backend
+        timeout: 30             # seconds a command may take
     route_prefix: /git          # URL prefix for all viewer routes
     access_role: ROLE_ADMIN     # role required to browse (PUBLIC_ACCESS to open up)
     repositories:
@@ -180,7 +247,10 @@ The repository index lists only the granted ones.
 
 ## Service API
 
-`Git\Service\Git2Service` is public and autowirable:
+`Git\Service\RepositoryViewerInterface` (service `git.viewer`, the backend
+`git.backend` chose) is public and autowirable; `Git\Service\CliService` and
+`Git\Service\Git2Service` are its two implementations, and `Git\Engine\Git`
+(service `git.engine`) the configured binary:
 
 - `getCommitLog()`, `getCommit()`, `getTree()`, `getBlob()`, `getBranches()`, `getTags()`: the viewer's reads
 - `getTag($repo, $name)`: the commit a tag points at, plus the message and date of an annotated tag
@@ -191,7 +261,7 @@ An unknown ref or tag is a `NotFoundHttpException` (404).
 ## Tests
 
 ```bash
-vendor/bin/phpunit   # needs php-git2 and the git binary (fixtures are built with it)
+vendor/bin/phpunit   # needs the git binary; the libgit2 contract runs when php-git2 is loaded, skipped otherwise
 ```
 
 ## Notes

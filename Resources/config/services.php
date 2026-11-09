@@ -4,6 +4,8 @@ use Git\Command\SyncCommand;
 use Git\Controller\RepositoryController;
 use Git\Repository\RepositoryRegistry;
 use Git\Repository\RepositorySync;
+use Git\Engine\Git;
+use Git\Service\CliService;
 use Git\Service\Git2Service;
 use Git\Warmer\RepositoryWarmer;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
@@ -24,6 +26,20 @@ return static function (ContainerConfigurator $container): void {
         ->tag('kernel.reset', ['method' => 'reset']);
 
     $services->alias(RepositoryRegistry::class, 'git.repository.registry');
+
+    // The engine: the git binary through symfony/process (Git\Engine\*), framework-free.
+    $services->set('git.engine', Git::class)
+        ->args(['%git.engine.binary%', '%git.engine.timeout%']);
+
+    $services->alias(Git::class, 'git.engine');
+
+    // The viewer's two backends; git.viewer (and RepositoryViewerInterface)
+    // is the one `git.backend` chooses (GitExtension).
+    $services->set('git.service.cli', CliService::class)
+        ->args([new Reference('git.repository.registry'), new Reference('git.engine')])
+        ->public();
+
+    $services->alias(CliService::class, 'git.service.cli');
 
     $services->set('git.service.git2', Git2Service::class)
         ->args([new Reference('git.repository.registry')])
@@ -52,7 +68,7 @@ return static function (ContainerConfigurator $container): void {
     // controller by class name. Keep the short id as a BC alias.
     $services->set(RepositoryController::class)
         ->args([
-            new Reference('git.service.git2'),
+            new Reference('git.viewer'),
             '%git.access_role%',
             '%git.repository_attribute%',
         ])

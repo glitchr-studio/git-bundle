@@ -1,7 +1,7 @@
 {
     "name": "git/git-bundle",
     "type": "symfony-bundle",
-    "description": "GitHub-like git repository viewer for Symfony, powered by libgit2 via the php-git2 extension",
+    "description": "git repository engine and viewer: the git binary through symfony/process (read, write, merge, smart HTTP), libgit2 as an alternative backend, and a Symfony bundle for a repository viewer",
     "homepage": "https://www.glitchr.io",
     "license": "MIT",
     "authors": [
@@ -22,11 +22,13 @@
     },
     "require": {
         "php": "^8.1",
-        "ext-git2": "*",
         "symfony/config": "^6.0|^7.0|^8.0",
         "symfony/dependency-injection": "^6.0|^7.0|^8.0",
+        "symfony/filesystem": "^6.4|^7.0|^8.0",
         "symfony/framework-bundle": "^6.0|^7.0|^8.0",
         "symfony/http-kernel": "^6.0|^7.0|^8.0",
+        "symfony/lock": "^6.4|^7.0|^8.0",
+        "symfony/process": "^6.4|^7.0|^8.0",
         "symfony/routing": "^6.0|^7.0|^8.0",
         "symfony/twig-bundle": "^6.0|^7.0|^8.0"
     },
@@ -38,5 +40,16 @@
             "*": "dist"
         },
         "sort-packages": true
-    }
+    },
+    "suggest": {
+        "ext-git2": "libgit2 as the viewer's backend (git.backend: libgit2, Git\\\\Service\\\\Git2Service); the git binary is the default"
+    },
+    "keywords": [
+        "git",
+        "repository",
+        "viewer",
+        "smart-http",
+        "libgit2",
+        "symfony-bundle"
+    ]
 }

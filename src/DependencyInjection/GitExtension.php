@@ -3,6 +3,7 @@
 namespace Git\DependencyInjection;
 
 use Git\Repository\RepositoryProviderInterface;
+use Git\Service\RepositoryViewerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -25,5 +26,12 @@ class GitExtension extends Extension
         $container->registerForAutoconfiguration(RepositoryProviderInterface::class)
             ->addTag('git.repository_provider');
         $container->setParameter('git.repositories', $config['repositories']);
+        $container->setParameter('git.engine.binary', $config['engine']['binary']);
+        $container->setParameter('git.engine.timeout', (float) $config['engine']['timeout']);
+
+        // The viewer reads through one interface; the backend says which.
+        $viewer = 'libgit2' === $config['backend'] ? 'git.service.git2' : 'git.service.cli';
+        $container->setAlias('git.viewer', $viewer)->setPublic(true);
+        $container->setAlias(RepositoryViewerInterface::class, $viewer)->setPublic(true);
     }
 }
