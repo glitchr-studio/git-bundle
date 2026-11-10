@@ -43,13 +43,21 @@ class GitRepository
 
     // ── Creating ───────────────────────────────────────────────────────
 
-    public function init(string $defaultBranch = 'main'): void
+    /**
+     * @param string|null $shared git init --shared: "group" when more than one
+     *                            system user writes the repositories (a web server
+     *                            and an SSH server's git user), null for git's default
+     */
+    public function init(string $defaultBranch = 'main', ?string $shared = null): void
     {
         Names::refName($defaultBranch);
+        if (null !== $shared && !preg_match('/^(?:false|true|umask|group|all|world|everybody|0[0-7]{3})$/', $shared)) {
+            throw GitException::invalid('shared mode', $shared);
+        }
         if ($this->exists()) {
             throw new GitException('The repository exists already.');
         }
-        $this->git->run(null, ['init', '--bare', '--quiet', '--initial-branch='.$defaultBranch, $this->path]);
+        $this->git->run(null, ['init', '--bare', '--quiet', '--initial-branch='.$defaultBranch, ...(null !== $shared ? ['--shared='.$shared] : []), $this->path]);
         foreach ([
             // Pushes are checked by the caller (who may push) before git sees them: HttpBackend serves them.
             'http.receivepack' => 'true',

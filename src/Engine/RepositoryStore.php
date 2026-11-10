@@ -12,9 +12,15 @@ use Symfony\Component\Filesystem\Filesystem;
  */
 class RepositoryStore
 {
+    /**
+     * @param string|null $shared how new repositories are shared between system users
+     *                            (git init --shared, GitRepository::init()): "group" when
+     *                            a web server and an SSH server's git user both write them
+     */
     public function __construct(
         private readonly Git $git,
         private readonly string $root,
+        private readonly ?string $shared = null,
     ) {
     }
 
@@ -41,7 +47,7 @@ class RepositoryStore
     {
         (new Filesystem())->mkdir($this->root(), 0770);
         $repository = $this->open($key);
-        $repository->init($defaultBranch);
+        $repository->init($defaultBranch, $this->shared);
 
         return $repository;
     }

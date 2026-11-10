@@ -103,6 +103,30 @@ final class Names
         return $path;
     }
 
+    /**
+     * A repository's address as a client names it ("owner/name", "group/sub/name"):
+     * up to $maxSegments segments, each a repository name (Names::isRepositoryName),
+     * so none is empty, ".", "..", starts with "-" or holds anything but letters,
+     * digits, ".", "_" and "-".
+     */
+    public static function isRepositoryPath(string $path, int $maxSegments = 8): bool
+    {
+        if ('' === $path || \strlen($path) > self::MAX_REF) {
+            return false;
+        }
+        $segments = explode('/', $path);
+        if (\count($segments) > $maxSegments) {
+            return false;
+        }
+        foreach ($segments as $segment) {
+            if (!self::isRepositoryName($segment)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /** A repository's name on a page and in a URL: letters, digits, ".", "_", "-"; not ".git"-suffixed. */
     public static function isRepositoryName(string $name): bool
     {

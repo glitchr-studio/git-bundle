@@ -4,7 +4,8 @@ A **git repository engine and viewer** for PHP. Two parts, one package:
 
 - **The engine** (`Git\Engine\`, framework-free): bare repositories read,
   written and merged through the `git` binary, git's smart HTTP protocol
-  served through `git http-backend`. It needs symfony/process,
+  served through `git http-backend`, git over SSH served from a forced
+  command. It needs symfony/process,
   symfony/filesystem and symfony/lock, nothing else - no framework, no
   database, no notion of accounts.
 - **The viewer** (`Git\Service\`, a Symfony bundle on top): browse trees,
@@ -25,7 +26,7 @@ A **git repository engine and viewer** for PHP. Two parts, one package:
   through the filesystem.
 - **Access control is yours.** The engine decides nothing about who may read
   or push: the application puts its firewall and its voters in front of
-  `HttpBackend` and of the writes. The viewer's routes are gated by a role and,
+  `HttpBackend`, `SshBackend` and the writes. The viewer's routes are gated by a role and,
   optionally, a per-repository attribute.
 - **libgit2 as an alternative.** `git.backend: libgit2` reads through php-git2
   in-process instead; the answers are the same (the tests run the same
@@ -85,6 +86,43 @@ $answer = (new HttpBackend($git, $store))->serve(
 
 Only the smart protocol is served. `tests/Engine/Fixtures/http-router.php` is
 a complete (access-free) example behind PHP's own server.
+
+Over SSH (`git clone git@host:<owner>/<name>.git`): the SSH server finds
+the account a key belongs to and forces a command for it (OpenSSH's
+`AuthorizedKeysCommand` printing `command="<your program> <key id>",restrict
+<key>`). That program reads what the client asked for from
+`SSH_ORIGINAL_COMMAND`, decides who may read or write, then hands its own
+standard streams to the bridge, which runs `git upload-pack`, `receive-pack`
+or `upload-archive` on the repository (an argument array, no shell; the pack
+goes straight between git and sshd) and returns git's exit code:
+
+```php
+use Git\Engine\GitException;
+use Git\Engine\SshBackend;
+use Git\Engine\SshCommand;
+
+try {
+    // git-upload-pack 'owner/name.git' -> service + "owner/name"; anything else throws:
+    // another program, a second argument, "..", a segment starting with "-", a quote...
+    $command = SshCommand::parse((string) getenv('SSH_ORIGINAL_COMMAND'));
+} catch (GitException) {
+    fwrite(STDERR, "fatal: only git is served here\n");
+    exit(128);
+}
+[$owner, $name] = $command->segments();       // yours to map, check and refuse
+$command->isWrite();                          // git-receive-pack: a push
+
+exit((new SshBackend($git, $store))->serve(
+    $command, key: '42', input: STDIN, output: STDOUT, error: STDERR,
+    gitProtocol: getenv('GIT_PROTOCOL') ?: null, // protocol v2 (sshd: AcceptEnv GIT_PROTOCOL)
+    maxPushBytes: 50_000_000,                    // git's own receive.maxInputSize
+));
+```
+
+When a web server and the SSH server's user both write the repositories,
+create them group-shared: `new RepositoryStore($git, $root, shared: 'group')`
+(`git init --shared=group`). `tests/Engine/Fixtures/ssh-serve.php` is a
+complete (access-free) forced command, run by the git client as its `ssh`.
 
 ## Try it in one command
 
