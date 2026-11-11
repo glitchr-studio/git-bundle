@@ -1,0 +1,22 @@
+{% extends '@Git/layout.html.twig' %}
+
+{% block title %}Graph — {{ config.label ?? repo }}{% endblock %}
+
+{% block body %}
+{{ include('@Git/_repo_nav.html.twig') }}
+
+<h2 style="font-size:16px; margin-bottom:12px;">Every branch</h2>
+
+{% if commits is empty %}
+    <div class="alert alert-info">No commits found.</div>
+{% else %}
+    {{ include('@Git/_graph.html.twig', {
+        repo: repo,
+        commits: commits,
+        more: has_more ? path('git_graph_page', {repo: repo, page: page + 1}) : null,
+    }) }}
+    {% if page > 1 %}
+    <div class="pagination"><a href="{{ path('git_graph_page', {repo: repo, page: page - 1}) }}">&laquo; Newer</a></div>
+    {% endif %}
+{% endif %}
+{% endblock %}

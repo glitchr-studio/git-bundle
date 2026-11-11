@@ -114,6 +114,27 @@ class RepositoryController extends AbstractController
     }
 
     /**
+     * The commit graph as a page: every branch's history, a hundred commits a page, its lanes
+     * drawn beside the rows (@Git/_graph.html.twig, graphjs's Lanes).
+     */
+    #[Route('/{repo}/graph', name: 'git_graph_page', requirements: ['repo' => '[^/]+'], methods: ['GET'])]
+    public function graphPage(Request $request, string $repo): Response
+    {
+        $this->checkAccess($repo);
+        $page    = max(1, (int) $request->query->get('page', 1));
+        $limit   = 100;
+        $commits = $this->git->getCommitGraph($repo, $limit, ($page - 1) * $limit);
+
+        return $this->render('@Git/graph.html.twig', [
+            'repo'     => $repo,
+            'config'   => $this->git->getRepositoryConfig($repo),
+            'commits'  => $commits,
+            'page'     => $page,
+            'has_more' => count($commits) === $limit,
+        ]);
+    }
+
+    /**
      * The commit graph as data: every branch's history, children before their
      * parents, each commit with its parents and the references pointing at it
      * (RepositoryViewerInterface::getCommitGraph()) - what a page draws a graph from.

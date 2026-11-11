@@ -1,0 +1,51 @@
+/*
+ * The commit graph's rows (templates/_graph.html.twig); the lanes beside them are graphjs's
+ * (../graphjs/lanes.css). A site restyles them through these variables, set on .git-graph or above:
+ *
+ *   --git-graph-border       the line between two rows
+ *   --git-graph-muted        the author, the date, the sha
+ *   --git-graph-ref-bg, --git-graph-ref-color         a branch's badge
+ *   --git-graph-tag-bg, --git-graph-tag-color         a tag's
+ *   --git-graph-head-bg, --git-graph-head-color       the checked-out branch's
+ */
+.git-graph {
+    --_git-graph-border: var(--git-graph-border, #d8dee4);
+    --_git-graph-muted: var(--git-graph-muted, #57606a);
+    --_git-graph-ref-bg: var(--git-graph-ref-bg, #ddf4ff);
+    --_git-graph-ref-color: var(--git-graph-ref-color, #0550ae);
+    --_git-graph-tag-bg: var(--git-graph-tag-bg, #fff8c5);
+    --_git-graph-tag-color: var(--git-graph-tag-color, #7d4e00);
+    --_git-graph-head-bg: var(--git-graph-head-bg, #1f883d);
+    --_git-graph-head-color: var(--git-graph-head-color, #fff);
+}
+
+@media (prefers-color-scheme: dark) {
+    .git-graph:not([data-lanes-theme="light"]) {
+        --_git-graph-border: var(--git-graph-border, #30363d);
+        --_git-graph-muted: var(--git-graph-muted, #8b949e);
+        --_git-graph-ref-bg: var(--git-graph-ref-bg, #0c2d6b);
+        --_git-graph-ref-color: var(--git-graph-ref-color, #a5d6ff);
+        --_git-graph-tag-bg: var(--git-graph-tag-bg, #3b2e00);
+        --_git-graph-tag-color: var(--git-graph-tag-color, #f2cc60);
+        --_git-graph-head-bg: var(--git-graph-head-bg, #238636);
+    }
+}
+
+.git-graph-rows { list-style: none; margin: 0; padding: 0; }
+.git-graph-row {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px;
+    min-height: 2rem; padding: 5px 8px; border-bottom: 1px solid var(--_git-graph-border);
+}
+.git-graph-row:last-child { border-bottom: 0; }
+.git-graph-row.is-lit { background: color-mix(in srgb, currentColor 5%, transparent); }
+.git-graph-subject { flex: 1 1 16rem; min-width: 0; overflow-wrap: anywhere; }
+.git-graph-refs { display: inline-flex; flex-wrap: wrap; gap: 4px; }
+.git-graph-ref {
+    padding: 0 6px; border-radius: 999px; font-size: .78em; line-height: 1.6; white-space: nowrap;
+    background: var(--_git-graph-ref-bg); color: var(--_git-graph-ref-color);
+}
+.git-graph-ref.is-tag { background: var(--_git-graph-tag-bg); color: var(--_git-graph-tag-color); }
+.git-graph-ref.is-head { background: var(--_git-graph-head-bg); color: var(--_git-graph-head-color); }
+.git-graph-ref.is-remote { background: transparent; border: 1px solid currentColor; }
+.git-graph-meta, .git-graph-sha { color: var(--_git-graph-muted); font-size: .86em; white-space: nowrap; }
+.git-graph-more { margin-top: 8px; }

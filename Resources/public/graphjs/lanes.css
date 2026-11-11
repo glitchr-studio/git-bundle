@@ -1,0 +1,113 @@
+/*
+ * graphjs lanes - a list of rows with its history in a gutter (src/js/lanes-view.js).
+ * As in index.css, everything a site changes is a --lanes-* variable, set on the
+ * [data-lanes] element or above it, with any selector: the defaults are
+ * fallbacks of private --_lanes-* tokens.
+ *
+ *   --lanes-color-0 … --lanes-color-7   the lanes' colours, cycled through
+ *   --lanes-width                       a line's width
+ *   --lanes-dot-bg                      inside a merge's dot (the ground)
+ *   --lanes-dim                         the opacity of what is off the lit links
+ *   --lanes-lit-width                   a lit line's width
+ *   --lanes-gutter                      set by the script: the gutter's width
+ */
+
+.lanes {
+    --_lanes-color-0: var(--lanes-color-0, #1f4e79);
+    --_lanes-color-1: var(--lanes-color-1, #b5523b);
+    --_lanes-color-2: var(--lanes-color-2, #3f7d4e);
+    --_lanes-color-3: var(--lanes-color-3, #8a5a9e);
+    --_lanes-color-4: var(--lanes-color-4, #b38a1d);
+    --_lanes-color-5: var(--lanes-color-5, #2f8a8a);
+    --_lanes-color-6: var(--lanes-color-6, #a64c74);
+    --_lanes-color-7: var(--lanes-color-7, #6c675c);
+    --_lanes-width: var(--lanes-width, 2px);
+    --_lanes-lit-width: var(--lanes-lit-width, 3px);
+    --_lanes-dot-bg: var(--lanes-dot-bg, #fffefb);
+    --_lanes-dim: var(--lanes-dim, .35);
+
+    position: relative;
+    padding-inline-start: var(--lanes-gutter, 0px);
+}
+
+@media (prefers-color-scheme: dark) {
+    .lanes:not([data-lanes-theme="light"]) {
+        --_lanes-color-0: var(--lanes-color-0, #8fb8e0);
+        --_lanes-color-1: var(--lanes-color-1, #e5937e);
+        --_lanes-color-2: var(--lanes-color-2, #7cc492);
+        --_lanes-color-3: var(--lanes-color-3, #c49ad6);
+        --_lanes-color-4: var(--lanes-color-4, #e0bd5c);
+        --_lanes-color-5: var(--lanes-color-5, #6cc6c6);
+        --_lanes-color-6: var(--lanes-color-6, #df8fb3);
+        --_lanes-color-7: var(--lanes-color-7, #a8a292);
+        --_lanes-dot-bg: var(--lanes-dot-bg, #1b1a17);
+    }
+}
+
+.lanes[data-lanes-theme="dark"] {
+    --_lanes-color-0: var(--lanes-color-0, #8fb8e0);
+    --_lanes-color-1: var(--lanes-color-1, #e5937e);
+    --_lanes-color-2: var(--lanes-color-2, #7cc492);
+    --_lanes-color-3: var(--lanes-color-3, #c49ad6);
+    --_lanes-color-4: var(--lanes-color-4, #e0bd5c);
+    --_lanes-color-5: var(--lanes-color-5, #6cc6c6);
+    --_lanes-color-6: var(--lanes-color-6, #df8fb3);
+    --_lanes-color-7: var(--lanes-color-7, #a8a292);
+    --_lanes-dot-bg: var(--lanes-dot-bg, #1b1a17);
+}
+
+.lanes-svg {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    overflow: visible;
+    pointer-events: none;
+}
+
+.lanes-color-0 { color: var(--_lanes-color-0); }
+.lanes-color-1 { color: var(--_lanes-color-1); }
+.lanes-color-2 { color: var(--_lanes-color-2); }
+.lanes-color-3 { color: var(--_lanes-color-3); }
+.lanes-color-4 { color: var(--_lanes-color-4); }
+.lanes-color-5 { color: var(--_lanes-color-5); }
+.lanes-color-6 { color: var(--_lanes-color-6); }
+.lanes-color-7 { color: var(--_lanes-color-7); }
+
+.lanes-link {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: var(--_lanes-width);
+    stroke-linecap: round;
+    transition: opacity .15s ease, stroke-width .15s ease;
+}
+
+.lanes-link.is-open {
+    stroke-dasharray: 3 4;
+}
+
+.lanes-dot {
+    fill: currentColor;
+    stroke: currentColor;
+    stroke-width: var(--_lanes-width);
+    transition: opacity .15s ease;
+}
+
+.lanes-dot.is-merge {
+    fill: var(--_lanes-dot-bg);
+}
+
+.lanes.is-lit .lanes-link:not(.is-lit),
+.lanes.is-lit .lanes-dot:not(.is-lit) {
+    opacity: var(--_lanes-dim);
+}
+
+.lanes .lanes-link.is-lit {
+    stroke-width: var(--_lanes-lit-width);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lanes-link,
+    .lanes-dot {
+        transition: none;
+    }
+}

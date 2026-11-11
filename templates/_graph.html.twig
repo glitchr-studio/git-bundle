@@ -1,0 +1,36 @@
+{#
+ # The commit graph: one row per commit, children before their parents, its lanes drawn beside the
+ # rows by graphjs's Lanes (bundles/git/graphjs). Without the script, the rows still read in order.
+ #
+ #     {% include '@Git/_graph.html.twig' with {repo: name, commits: viewer.getCommitGraph(name)} %}
+ #
+ #  - repo:     the repository's name (the links to each commit)
+ #  - commits:  list<Git\Model\CommitInfo>, as RepositoryViewerInterface::getCommitGraph() gives them
+ #  - assets:   false when the page already loads bundles/git/graphjs/lanes.* and css/graph.css
+ #  - commit_route: the route of a commit's page ('git_commit'), given {repo, sha}
+ #  - more:     the address of the next page, or null
+ #  - label:    the list's accessible name ('Commit graph')
+ #}
+{% if assets ?? true %}
+{% set base = (app.request.basePath ?? '') ~ '/bundles/git' %}
+<link rel="stylesheet" href="{{ base }}/graphjs/lanes.css">
+<link rel="stylesheet" href="{{ base }}/css/graph.css">
+<script type="module" src="{{ base }}/graphjs/lanes-view.js"></script>
+{% endif %}
+<div class="git-graph" data-lanes aria-label="{{ label ?? 'Commit graph' }}">
+    <ol class="git-graph-rows">
+    {% for commit in commits %}
+        <li class="git-graph-row" data-lanes-node="{{ commit.sha }}"{% if commit.parentShas is not empty %} data-lanes-parents="{{ commit.parentShas|join(' ') }}"{% endif %}>
+            <a class="git-graph-subject" href="{{ path(commit_route ?? 'git_commit', {repo: repo, sha: commit.sha}) }}">{{ commit.subject }}</a>
+            {% if commit.refs is not empty %}
+            <span class="git-graph-refs">
+                {% for ref in commit.refs %}<span class="git-graph-ref is-{{ ref.type }}{{ (ref.head ?? false) ? ' is-head' }}">{{ ref.name }}</span>{% endfor %}
+            </span>
+            {% endif %}
+            <span class="git-graph-meta">{{ commit.authorName }} · <time datetime="{{ commit.authorDate|date('c') }}">{{ commit.authorDate|date('Y-m-d H:i') }}</time></span>
+            <code class="git-graph-sha" title="{{ commit.sha }}">{{ commit.shortSha }}</code>
+        </li>
+    {% endfor %}
+    </ol>
+</div>
+{% if more ?? null %}<p class="git-graph-more"><a href="{{ more }}">Older &raquo;</a></p>{% endif %}

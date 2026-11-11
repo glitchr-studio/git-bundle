@@ -9,6 +9,9 @@ use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authorization\AccessDecision;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
 
 /**
  * The commit graph, against a real repository built with the git binary:
@@ -182,5 +185,51 @@ abstract class GraphTestCase extends TestCase
 
         // A limit out of bounds is brought back within them.
         self::assertCount(1, json_decode((string) $controller->graph(new Request(['limit' => '0']), 'fixture')->getContent(), true)['commits']);
+    }
+
+    public function testThePageWritesEachCommitAsARowOfTheLanes(): void
+    {
+        if (!class_exists(AccessDecision::class)) {
+            self::markTestSkipped('Needs symfony/security-core (a host application).');
+        }
+
+        $loader = new FilesystemLoader();
+        $loader->addPath(\dirname(__DIR__, 2).'/templates', 'Git');
+        $twig = new Environment($loader, ['strict_variables' => false]);
+        $twig->addFunction(new TwigFunction('path', fn (string $route, array $parameters = []) => '/'.$route.'?'.http_build_query($parameters)));
+        $container = new Container();
+        $container->set('twig', $twig);
+        $container->set('security.authorization_checker', new class {
+            public function isGranted(mixed $attribute, mixed $subject = null, mixed $decision = null): bool
+            {
+                return true;
+            }
+        });
+        $controller = new RepositoryController($this->service());
+        $controller->setContainer($container);
+
+        $html = (string) $controller->graphPage(new Request(), 'fixture')->getContent();
+        $document = new \DOMDocument();
+        @$document->loadHTML($html);
+        $xpath = new \DOMXPath($document);
+
+        $graph = $this->service()->getCommitGraph('fixture');
+        $rows = $xpath->query('//*[@data-lanes]//*[@data-lanes-node]');
+        self::assertSame(1, $xpath->query('//*[@data-lanes]')->length, 'one graph');
+        self::assertSame(\count($graph), $rows->length, 'a row per commit');
+        foreach ($graph as $index => $commit) {
+            $row = $rows->item($index);
+            self::assertSame($commit->sha, $row->getAttribute('data-lanes-node'), 'in the order of the graph');
+            self::assertSame(implode(' ', $commit->parentShas), $row->getAttribute('data-lanes-parents'), $commit->subject.'\'s parents, the first first');
+            self::assertStringContainsString('sha='.$commit->sha, $xpath->query('.//a', $row)->item(0)->getAttribute('href'));
+        }
+        self::assertFalse($rows->item(\count($graph) - 1)->hasAttribute('data-lanes-parents'), 'the root has none');
+
+        $badges = array_map(fn (\DOMElement $badge) => $badge->getAttribute('class').' '.$badge->textContent, iterator_to_array($xpath->query('//*[contains(@class, "git-graph-ref ")]')));
+        self::assertContains('git-graph-ref is-branch is-head main', $badges, 'the checked-out branch');
+        self::assertContains('git-graph-ref is-tag v1', $badges);
+        self::assertContains('git-graph-ref is-remote origin/main', $badges);
+        self::assertSame(1, $xpath->query('//script[@type="module"][@src="/bundles/git/graphjs/lanes-view.js"]')->length, 'the lanes\' script');
+        self::assertSame(1, $xpath->query('//nav//a[contains(@href, "git_graph_page")]')->length, 'a tab for the graph');
     }
 }

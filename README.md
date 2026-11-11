@@ -208,6 +208,7 @@ Do **not** add an import `prefix:` — the routes are already prefixed.
 | `/git/{repo}/log/{ref}` | commit history (paginated) |
 | `/git/{repo}/commit/{sha}` | commit details + diff |
 | `/git/{repo}/branches`, `/git/{repo}/tags` | refs |
+| `/git/{repo}/graph` | the commit graph, its lanes drawn beside the commits (see below) |
 | `/git/{repo}/graph.json` | the commit graph, as JSON (see below) |
 
 ### The commit graph
@@ -237,6 +238,23 @@ parents and the references pointing at it.
 is the offset of the following page, `null` on the last. A reference's `type`
 is `branch`, `remote`, `tag` or `head` (a detached HEAD); the checked-out
 branch carries `head: true`. The same access rules apply as to the pages.
+
+`/git/{repo}/graph` (route `git_graph_page`, the "Graph" tab) draws it: a
+hundred commits a page, one row each - its subject linked to the commit, its
+branches and tags, its author, date and short sha - and the lanes beside the
+rows, drawn by the `Lanes` class of [@glitchr/graphjs](https://github.com/glitchr-studio/graphjs)
+(1.1.0, vendored under `Resources/public/graphjs/`, published by
+`assets:install` as `bundles/git/graphjs/`). Without the script the rows still
+read in order. A page of one's own includes the same rows:
+
+```twig
+{% include '@Git/_graph.html.twig' with {repo: name, commits: commits} %}
+{# assets: false when the page already loads the scripts; commit_route, more, label #}
+```
+
+The rows' look is a handful of `--git-graph-*` variables
+(`Resources/public/css/graph.css`), the lanes' `--lanes-*` (graphjs's
+`lanes.css`).
 
 In PHP: `Git2Service::getCommitGraph($repo, $limit, $offset)` returns the
 `CommitInfo`s, their `refs` filled; `getReferencesByCommit($repo)` the
