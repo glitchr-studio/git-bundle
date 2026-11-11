@@ -13,6 +13,7 @@
     {{ include('@Git/_graph.html.twig', {
         repo: repo,
         commits: commits,
+        theme: 'light',
         more: has_more ? path('git_graph_page', {repo: repo, page: page + 1}) : null,
     }) }}
     {% if page > 1 %}

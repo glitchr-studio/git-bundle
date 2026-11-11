@@ -49,3 +49,13 @@
 .git-graph-ref.is-remote { background: transparent; border: 1px solid currentColor; }
 .git-graph-meta, .git-graph-sha { color: var(--_git-graph-muted); font-size: .86em; white-space: nowrap; }
 .git-graph-more { margin-top: 8px; }
+
+.git-graph[data-lanes-theme="dark"] {
+    --_git-graph-border: var(--git-graph-border, #30363d);
+    --_git-graph-muted: var(--git-graph-muted, #8b949e);
+    --_git-graph-ref-bg: var(--git-graph-ref-bg, #0c2d6b);
+    --_git-graph-ref-color: var(--git-graph-ref-color, #a5d6ff);
+    --_git-graph-tag-bg: var(--git-graph-tag-bg, #3b2e00);
+    --_git-graph-tag-color: var(--git-graph-tag-color, #f2cc60);
+    --_git-graph-head-bg: var(--git-graph-head-bg, #238636);
+}

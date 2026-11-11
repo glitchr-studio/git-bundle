@@ -10,6 +10,7 @@
  #  - commit_route: the route of a commit's page ('git_commit'), given {repo, sha}
  #  - more:     the address of the next page, or null
  #  - label:    the list's accessible name ('Commit graph')
+ #  - theme:    'light' or 'dark' to ignore the system's scheme (the bundle's own pages are light)
  #}
 {% if assets ?? true %}
 {% set base = (app.request.basePath ?? '') ~ '/bundles/git' %}
@@ -17,7 +18,7 @@
 <link rel="stylesheet" href="{{ base }}/css/graph.css">
 <script type="module" src="{{ base }}/graphjs/lanes-view.js"></script>
 {% endif %}
-<div class="git-graph" data-lanes aria-label="{{ label ?? 'Commit graph' }}">
+<div class="git-graph" data-lanes aria-label="{{ label ?? 'Commit graph' }}"{% if theme ?? null %} data-lanes-theme="{{ theme }}"{% endif %}>
     <ol class="git-graph-rows">
     {% for commit in commits %}
         <li class="git-graph-row" data-lanes-node="{{ commit.sha }}"{% if commit.parentShas is not empty %} data-lanes-parents="{{ commit.parentShas|join(' ') }}"{% endif %}>
