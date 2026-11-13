@@ -1,0 +1,1027 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Argument of an invalid type mixed supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Command/SyncCommand.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of function in_array expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Command/SyncCommand.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Command/SyncCommand.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Command/SyncCommand.php
+
+		-
+			message: '#^Cannot access offset ''binary'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/DependencyInjection/GitExtension.php
+
+		-
+			message: '#^Cannot access offset ''timeout'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/DependencyInjection/GitExtension.php
+
+		-
+			message: '#^Cannot cast mixed to float\.$#'
+			identifier: cast.double
+			count: 1
+			path: src/DependencyInjection/GitExtension.php
+
+		-
+			message: '#^Parameter \#2 \$value of method Symfony\\Component\\DependencyInjection\\Container\:\:setParameter\(\) expects array\|bool\|float\|int\|string\|UnitEnum\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/DependencyInjection/GitExtension.php
+
+		-
+			message: '#^Method Git\\Engine\\BackendResponse\:\:__construct\(\) has parameter \$headers with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/BackendResponse.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:environment\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:environment\(\) has parameter \$extra with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:environment\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:process\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:process\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:process\(\) has parameter \$env with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:run\(\) has parameter \$allowedExits with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:run\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Method Git\\Engine\\Git\:\:run\(\) has parameter \$env with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Parameter \#1 \$flags of method Symfony\\Component\\Process\\Process\:\:getIterator\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Parameter \#3 \$env of class Symfony\\Component\\Process\\Process constructor expects array\<string, string\|Stringable\|false\>\|null, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine/Git.php
+
+		-
+			message: '#^Cannot use array destructuring on list\<string\>\|false\.$#'
+			identifier: offsetAccess.nonArray
+			count: 2
+			path: src/Engine/GitRepository.php
+
+		-
+			message: '#^Method Git\\Engine\\GitRepository\:\:readLimited\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/GitRepository.php
+
+		-
+			message: '#^Parameter \#1 \$flags of method Symfony\\Component\\Process\\Process\:\:getIterator\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine/GitRepository.php
+
+		-
+			message: '#^Parameter \#2 \$callback of function array_filter expects \(callable\(string\)\: bool\)\|null, ''strlen'' given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Engine/GitRepository.php
+
+		-
+			message: '#^Parameter \#2 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine/GitRepository.php
+
+		-
+			message: '#^Parameter \#1 \$flags of method Symfony\\Component\\Process\\Process\:\:getIterator\(\) expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine/HttpBackend.php
+
+		-
+			message: '#^Binary operation "\." between mixed and ''/HEAD'' results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/Engine/SshBackend.php
+
+		-
+			message: '#^Match expression does not handle remaining value\: string$#'
+			identifier: match.unhandled
+			count: 1
+			path: src/Engine/SshBackend.php
+
+		-
+			message: '#^Method Git\\Engine\\SshBackend\:\:command\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Engine/SshBackend.php
+
+		-
+			message: '#^Parameter \#1 \$command of function proc_open expects list\<string\>\|string, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine/SshBackend.php
+
+		-
+			message: '#^Parameter \#5 \$env_vars of function proc_open expects array\<string, mixed\>\|null, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Engine/SshBackend.php
+
+		-
+			message: '#^Method Git\\Model\\CommitInfo\:\:__construct\(\) has parameter \$parentShas with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/CommitInfo.php
+
+		-
+			message: '#^Method Git\\Model\\CommitInfo\:\:__construct\(\) has parameter \$stats with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Model/CommitInfo.php
+
+		-
+			message: '#^Method Git\\Model\\TreeEntry\:\:fromGit2Entry\(\) has parameter \$entry with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Model/TreeEntry.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositoryRegistry\:\:__construct\(\) has parameter \$configured with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/RepositoryRegistry.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositoryRegistry\:\:all\(\) should return array\<string, array\{path\: string, url\: string\|null, label\: string\|null, description\: string\|null, default_branch\: string\}\> but returns array\<string, array\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Repository/RepositoryRegistry.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositoryRegistry\:\:all\(\) should return array\<string, array\{path\: string, url\: string\|null, label\: string\|null, description\: string\|null, default_branch\: string\}\> but returns array\<string, non\-empty\-array\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Repository/RepositoryRegistry.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositoryRegistry\:\:get\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/RepositoryRegistry.php
+
+		-
+			message: '#^Offset ''path'' on array\{path\: string, url\?\: string\|null, label\?\: string\|null, description\?\: string\|null, default_branch\?\: string\} in isset\(\) always exists and is not nullable\.$#'
+			identifier: isset.offset
+			count: 1
+			path: src/Repository/RepositoryRegistry.php
+
+		-
+			message: '#^Property Git\\Repository\\RepositoryRegistry\:\:\$resolved type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/RepositoryRegistry.php
+
+		-
+			message: '#^Argument of an invalid type list\<string\>\|false supplied for foreach, only iterables are supported\.$#'
+			identifier: foreach.nonIterable
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositorySync\:\:cloneRepository\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositorySync\:\:fetchUpdates\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositorySync\:\:runWithProgress\(\) has parameter \$cmd with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositorySync\:\:runWithProgress\(\) has parameter \$env with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositorySync\:\:sync\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Parameter \#1 \$command of function proc_open expects list\<string\>\|string, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Parameter \#1 \$filename of function is_dir expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Parameter \#1 \$path of function dirname expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Parameter \#5 \$env_vars of function proc_open expects array\<string, mixed\>\|null, array\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Part \$label \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 2
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Part \$path \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Part \$url \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Repository/RepositorySync.php
+
+		-
+			message: '#^Method Git\\Service\\CliService\:\:getRepositoryConfig\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/CliService.php
+
+		-
+			message: '#^Method Git\\Service\\CliService\:\:info\(\) has parameter \$refs with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/CliService.php
+
+		-
+			message: '#^Method Git\\Service\\CliService\:\:info\(\) has parameter \$stats with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/CliService.php
+
+		-
+			message: '#^Method Git\\Service\\CliService\:\:listRepositories\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/CliService.php
+
+		-
+			message: '#^Parameter \#1 \$string of function rtrim expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CliService.php
+
+		-
+			message: '#^Parameter \#2 \$ref of method Git\\Service\\CliService\:\:resolveRef\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CliService.php
+
+		-
+			message: '#^Parameter \$refs of class Git\\Model\\CommitInfo constructor expects list\<array\{type\: ''branch''\|''head''\|''remote''\|''tag'', name\: string, head\?\: bool\}\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/CliService.php
+
+		-
+			message: '#^Binary operation "\." between ''@'' and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 3
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Generator expects key type string, mixed given\.$#'
+			identifier: generator.keyType
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Generator expects value type array\{content\: string, filemode\: int\}, mixed given\.$#'
+			identifier: generator.valueType
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:commitInfoFromSha\(\) has parameter \$refs with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:commitInfoFromSha\(\) has parameter \$repo with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:getBranches\(\) should return array\<string, array\{name\: string, sha\: string, is_head\: bool\}\> but returns array\<string, array\{name\: string, sha\: string\|null, is_head\: bool\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:getRepositoryConfig\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:getTags\(\) should return array\<string, array\{name\: string, sha\: string\}\> but returns array\<array\{name\: mixed, sha\: string\}\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:listRepositories\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:openRepo\(\) has no return type specified\.$#'
+			identifier: missingType.return
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:walk\(\) has parameter \$repo with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\Git2Service\:\:walk\(\) has parameter \$tree with no type specified\.$#'
+			identifier: missingType.parameter
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#1 \$haystack of function str_ends_with expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#1 \$haystack of function str_starts_with expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#1 \$path of function git_repository_open expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#1 \$string of function substr expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#2 \$id of function git_commit_lookup expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#2 \$name of function git_reference_lookup expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#2 \$ref of method Git\\Service\\Git2Service\:\:resolveRef\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#2 \$sha of method Git\\Service\\Git2Service\:\:commitInfoFromSha\(\) expects string, string\|true given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \#2 \$spec of function git_revparse_single expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \$authorEmail of class Git\\Model\\CommitInfo constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \$authorName of class Git\\Model\\CommitInfo constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \$committerEmail of class Git\\Model\\CommitInfo constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \$committerName of class Git\\Model\\CommitInfo constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Parameter \$refs of class Git\\Model\\CommitInfo constructor expects list\<array\{type\: ''branch''\|''head''\|''remote''\|''tag'', name\: string, head\?\: bool\}\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Part \$config\[''path''\] \(mixed\) of encapsed string cannot be cast to string\.$#'
+			identifier: encapsedStringPart.nonString
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between bool\|string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 2
+			path: src/Service/Git2Service.php
+
+		-
+			message: '#^Method Git\\Service\\RepositoryViewerInterface\:\:getRepositoryConfig\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/RepositoryViewerInterface.php
+
+		-
+			message: '#^Method Git\\Service\\RepositoryViewerInterface\:\:listRepositories\(\) return type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: src/Service/RepositoryViewerInterface.php
+
+		-
+			message: '#^Method Tests\\Git\\DependencyInjection\\GitExtensionTest\:\:load\(\) has parameter \$config with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/DependencyInjection/GitExtensionTest.php
+
+		-
+			message: '#^Binary operation "\." between non\-falsy\-string and mixed results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Cannot call method addPsr4\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Cannot cast mixed to int\.$#'
+			identifier: cast.int
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Parameter \#1 \$url of function parse_url expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Parameter \#10 \$gitProtocol of method Git\\Engine\\HttpBackend\:\:serve\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Parameter \#3 \$method of method Git\\Engine\\HttpBackend\:\:serve\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Parameter \#5 \$contentType of method Git\\Engine\\HttpBackend\:\:serve\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Parameter \#6 \$contentEncoding of method Git\\Engine\\HttpBackend\:\:serve\(\) expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Parameter \#8 \$input of method Git\\Engine\\HttpBackend\:\:serve\(\) expects resource\|string\|null, resource\|false\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/Fixtures/http-router.php
+
+		-
+			message: '#^Cannot call method addPsr4\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Engine/Fixtures/ssh-serve.php
+
+		-
+			message: '#^Cannot access property \$content on Git\\Engine\\Model\\Blob\|null\.$#'
+			identifier: property.nonObject
+			count: 2
+			path: tests/Engine/GitRepositoryTest.php
+
+		-
+			message: '#^Cannot access property \$name on mixed\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Engine/GitRepositoryTest.php
+
+		-
+			message: '#^Cannot access property \$parents on Git\\Engine\\Model\\Commit\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Engine/GitRepositoryTest.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, list\<Git\\Engine\\Model\\TreeEntry\>\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/GitRepositoryTest.php
+
+		-
+			message: '#^Cannot access property \$content on Git\\Engine\\Model\\Blob\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Engine/HttpBackendTest.php
+
+		-
+			message: '#^Cannot access property \$parents on Git\\Engine\\Model\\Commit\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Engine/HttpBackendTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Engine\\HttpBackendTest\:\:git\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Engine/HttpBackendTest.php
+
+		-
+			message: '#^Parameter \#1 \$command of class Symfony\\Component\\Process\\Process constructor expects array\<string\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/HttpBackendTest.php
+
+		-
+			message: '#^Parameter \#1 \$id of method Git\\Engine\\GitRepository\:\:commit\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/HttpBackendTest.php
+
+		-
+			message: '#^Parameter \#2 \$message of static method PHPUnit\\Framework\\Assert\:\:assertFalse\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Engine/NamesTest.php
+
+		-
+			message: '#^Cannot access property \$content on Git\\Engine\\Model\\Blob\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Engine/RepositoryLocksTest.php
+
+		-
+			message: '#^Cannot access property \$parents on Git\\Engine\\Model\\Commit\|null\.$#'
+			identifier: property.nonObject
+			count: 1
+			path: tests/Engine/SshBackendTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Engine\\SshBackendTest\:\:git\(\) has parameter \$args with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Engine/SshBackendTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Engine\\SshBackendTest\:\:git\(\) has parameter \$env with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Engine/SshBackendTest.php
+
+		-
+			message: '#^Parameter \#1 \$command of class Symfony\\Component\\Process\\Process constructor expects array\<string\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/SshBackendTest.php
+
+		-
+			message: '#^Parameter \#1 \$id of method Git\\Engine\\GitRepository\:\:commit\(\) expects string, string\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/SshBackendTest.php
+
+		-
+			message: '#^Parameter \#3 \$env of class Symfony\\Component\\Process\\Process constructor expects array\<string, string\|Stringable\|false\>\|null, non\-empty\-array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Engine/SshBackendTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Engine\\SshCommandTest\:\:accepted\(\) return type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Engine/SshCommandTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Engine\\SshCommandTest\:\:refused\(\) return type has no value type specified in iterable type iterable\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Engine/SshCommandTest.php
+
+		-
+			message: '#^Method Git\\Repository\\RepositoryProviderInterface@anonymous/tests/Repository/RepositoryRegistryTest\.php\:13\:\:getRepositories\(\) should return array\<string, array\{path\: string, url\?\: string\|null, label\?\: string\|null, description\?\: string\|null, default_branch\?\: string\}\> but returns array\{app\: array\{path\: ''/provided/app\.git'', label\: ''Provided''\}, client\: array\{path\: ''/provided/client\.git''\}, ''''\: array\{path\: ''/nameless\.git''\}, broken\: array\{label\: ''no path''\}\}\.$#'
+			identifier: return.type
+			count: 1
+			path: tests/Repository/RepositoryRegistryTest.php
+
+		-
+			message: '#^Offset ''default_branch'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: tests/Repository/RepositoryRegistryTest.php
+
+		-
+			message: '#^Offset ''path'' might not exist on array\|null\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: tests/Repository/RepositoryRegistryTest.php
+
+		-
+			message: '#^Call to function is_subclass_of\(\) with ''Git\\\\Warmer\\\\RepositoryWarmer'' and ''Git\\\\Repository\\\\RepositorySync'' will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: tests/Repository/RepositorySyncTest.php
+
+		-
+			message: '#^Call to static method PHPUnit\\Framework\\Assert\:\:assertTrue\(\) with true will always evaluate to true\.$#'
+			identifier: staticMethod.alreadyNarrowedType
+			count: 1
+			path: tests/Repository/RepositorySyncTest.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 1
+			path: tests/Repository/RepositorySyncTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Service\\CliGraphTest\:\:viewer\(\) has parameter \$repositories with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Service/CliGraphTest.php
+
+		-
+			message: '#^Parameter \#1 \$repositories of class Git\\Service\\CliService constructor expects array\<string, array\{path\: string, label\: string\|null, description\: string\|null, default_branch\: string\}\>\|Git\\Repository\\RepositoryRegistry, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/CliGraphTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Service\\CliServiceTest\:\:viewer\(\) has parameter \$repositories with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Service/CliServiceTest.php
+
+		-
+			message: '#^Parameter \#1 \$repositories of class Git\\Service\\CliService constructor expects array\<string, array\{path\: string, label\: string\|null, description\: string\|null, default_branch\: string\}\>\|Git\\Repository\\RepositoryRegistry, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/CliServiceTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Service\\Git2GraphTest\:\:viewer\(\) has parameter \$repositories with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Service/Git2GraphTest.php
+
+		-
+			message: '#^Parameter \#1 \$repositories of class Git\\Service\\Git2Service constructor expects array\<string, array\{path\: string, label\: string\|null, description\: string\|null, default_branch\: string\}\>\|Git\\Repository\\RepositoryRegistry, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/Git2GraphTest.php
+
+		-
+			message: '#^Method Tests\\Git\\Service\\Git2ServiceTest\:\:viewer\(\) has parameter \$repositories with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Service/Git2ServiceTest.php
+
+		-
+			message: '#^Parameter \#1 \$repositories of class Git\\Service\\Git2Service constructor expects array\<string, array\{path\: string, label\: string\|null, description\: string\|null, default_branch\: string\}\>\|Git\\Repository\\RepositoryRegistry, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/Git2ServiceTest.php
+
+		-
+			message: '#^Access to an undefined property object\:\:\$asked\.$#'
+			identifier: property.notFound
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''author'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''commits'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 6
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''date'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''default_branch'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''next'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''parents'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''refs'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''repository'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''sha'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''short'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset ''subject'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access offset 0 on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot access property \$length on DOMNodeList\<DOMNameSpaceNode\|DOMNode\>\|false\.$#'
+			identifier: property.nonObject
+			count: 4
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot call method getAttribute\(\) on DOMNameSpaceNode\|DOMNode\|null\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot call method hasAttribute\(\) on DOMNameSpaceNode\|DOMNode\|null\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Cannot call method item\(\) on DOMNodeList\<DOMNameSpaceNode\|DOMNode\>\|false\.$#'
+			identifier: method.nonObject
+			count: 3
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Method Tests\\Git\\Service\\GraphTestCase\:\:viewer\(\) has parameter \$repositories with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_column expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_keys expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#1 \$array of function array_unique expects an array of values castable to string, list given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(DOMElement\)\: non\-falsy\-string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#1 \$iterator of function iterator_to_array expects iterable, DOMNodeList\<DOMNameSpaceNode\|DOMNode\>\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#2 \$array of function implode expects array\<string\>, array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#2 \$contextNode of method DOMXPath\:\:query\(\) expects DOMNode\|null, DOMNameSpaceNode\|DOMNode\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#2 \$datetime of static method DateTimeImmutable\:\:createFromFormat\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of static method PHPUnit\\Framework\\Assert\:\:assertCount\(\) expects Countable\|iterable, mixed given\.$#'
+			identifier: argument.type
+			count: 3
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Parameter \#2 \$haystack of static method PHPUnit\\Framework\\Assert\:\:assertStringContainsString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Possibly invalid array key type mixed\.$#'
+			identifier: offsetAccess.invalidOffset
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Property class@anonymous/tests/Service/GraphTestCase\.php\:147\:\:\$asked type has no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Service/GraphTestCase.php
+
+		-
+			message: '#^Method Tests\\Git\\Service\\ViewerTestCase\:\:viewer\(\) has parameter \$repositories with no value type specified in iterable type array\.$#'
+			identifier: missingType.iterableValue
+			count: 1
+			path: tests/Service/ViewerTestCase.php
+
+		-
+			message: '#^Cannot call method addPsr4\(\) on mixed\.$#'
+			identifier: method.nonObject
+			count: 2
+			path: tests/bootstrap.php

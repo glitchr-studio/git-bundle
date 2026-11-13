@@ -1,0 +1,12 @@
+# phpstan-baseline.neon lists the violations there were when the CI started (2026-11-13): the CI fails on
+# any other. Fix one, then drop its entry.
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+  level: max
+  paths:
+    - src
+    - tests
+  tmpDir: .tmp
+  reportUnmatchedIgnoredErrors: false

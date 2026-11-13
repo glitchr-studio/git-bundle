@@ -4,7 +4,7 @@
 # theme, no app code) serving the bundle's own flat templates. It demonstrates
 # the two ways to declare a repository:
 #
-#   * url + path  → auto-cloned by the RepositoryWarmer (libgit2/libgit2 here)
+#   * url + path  → cloned by git:sync (libgit2/libgit2 here)
 #   * path only   → any existing local repository (this very checkout)
 #
 # Build FROM THE REPOSITORY ROOT (the local checkout is what gets installed —
@@ -14,7 +14,7 @@
 #   docker run --rm -p 8000:8000 git-bundle-demo
 #   → http://localhost:8000/git
 #
-# libgit2 is cloned on container start — watch the warmer stream its progress.
+# libgit2 is cloned on container start — watch git:sync stream its progress.
 
 FROM php:8.4-cli
 

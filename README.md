@@ -138,6 +138,9 @@ docker run --rm -p 8000:8000 git-bundle-demo
 ## Requirements
 
 - PHP ≥ 8.1 and the `git` binary (2.38 or later: merges use `merge-tree --write-tree`).
+- Symfony 6.4, 7 or 8 (the bundle; the engine uses symfony/process, symfony/filesystem and symfony/lock
+  only). The viewer's routes check access through the security layer: install `symfony/security-bundle`
+  (any firewall; `access_role: PUBLIC_ACCESS` opens the viewer to everyone).
 - Optionally, for `git.backend: libgit2`, the **php-git2 extension** (PHP
   bindings for the libgit2 C library). It is not bundled with PHP; install
   libgit2 then build the extension:
@@ -154,6 +157,8 @@ docker run --rm -p 8000:8000 git-bundle-demo
 ```bash
 composer require git/git-bundle:^1.0
 ```
+
+Releases are tagged `vX.Y.Z` (see [CHANGELOG.md](CHANGELOG.md)); `1.x-dev` follows the `1.x` branch.
 
 Enable it (Flex usually does this) in `config/bundles.php`:
 
@@ -318,6 +323,7 @@ An unknown ref or tag is a `NotFoundHttpException` (404).
 
 ```bash
 vendor/bin/phpunit   # needs the git binary; the libgit2 contract runs when php-git2 is loaded, skipped otherwise
+phpstan analyse      # level max; phpstan-baseline.neon lists the violations known at 1.0.0
 ```
 
 ## Notes
